@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: apps_r
 description: A new Flutter project.
 publish_to: 'none'
@@ -27,4 +28,35 @@ flutter:
   uses-material-design: true
 
   assets:
+=======
+name: apps_r
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+>>>>>>> 56ab5493aa91ec0020d633a76948dcb3790a5fbe
     - assets/icon.png

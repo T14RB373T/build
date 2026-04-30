@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .dart_tool/
 .packages
 .pub/
@@ -20,4 +21,28 @@ ios/Flutter/.last_build_id
 *.log
 *.tmp
 *.lock
+=======
+.dart_tool/
+.packages
+.pub/
+build/
+coverage/
+
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/.last_build_id
+
+.idea/
+.vscode/
+
+*.iml
+*.log
+*.tmp
+*.lock
+>>>>>>> 56ab5493aa91ec0020d633a76948dcb3790a5fbe
 .env
