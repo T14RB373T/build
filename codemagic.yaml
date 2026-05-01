@@ -1,6 +1,6 @@
 workflows:
   ios-unsigned:
-    name: iOS Unsigned Clean Build
+    name: iOS Unsigned Simulator Build
     max_build_duration: 60
 
     environment:
@@ -8,19 +8,25 @@ workflows:
       xcode: latest
 
     scripts:
+      # 🔥 cek environment
+      - flutter doctor
+
+      # 🔥 clean project
       - flutter clean
+
+      # 🔥 install dependencies
       - flutter pub get
 
-      # 🔥 RESET iOS TOTAL
+      # 🔥 regenerate project (biar iOS fresh & tidak corrupt)
       - rm -rf ios
       - flutter create .
 
-      # 🔥 BUILD TANPA SIGNING
-      - flutter build ios --release --no-codesign
+      # 🔥 build TANPA signing (pakai simulator)
+      - flutter build ios --release --no-codesign --simulator
 
-      # 🔥 BUNGKUS IPA
+      # 🔥 buat IPA manual (simulator build)
       - mkdir Payload
-      - cp -r build/ios/iphoneos/Runner.app Payload/
+      - cp -r build/ios/iphonesimulator/Runner.app Payload/
       - zip -r app.ipa Payload
 
     artifacts:
