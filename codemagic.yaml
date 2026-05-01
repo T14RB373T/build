@@ -7,13 +7,20 @@ workflows:
       flutter: stable
       xcode: latest
 
-    scripts:
-      - flutter pub get
-      - flutter build ios --release --no-codesign
+scripts:
+  - flutter clean
+  - flutter pub get
 
-      - mkdir Payload
-      - cp -r build/ios/iphoneos/Runner.app Payload/
-      - zip -r app.ipa Payload
+  - sed -i '' 's/DEVELOPMENT_TEAM = .*/DEVELOPMENT_TEAM = "";/g' ios/Runner.xcodeproj/project.pbxproj || true
+  - sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj || true
+  - sed -i '' 's/CODE_SIGNING_ALLOWED = YES;/CODE_SIGNING_ALLOWED = NO;/g' ios/Runner.xcodeproj/project.pbxproj || true
+  - sed -i '' 's/CODE_SIGNING_REQUIRED = YES;/CODE_SIGNING_REQUIRED = NO;/g' ios/Runner.xcodeproj/project.pbxproj || true
+
+  - flutter build ios --release --no-codesign
+
+  - mkdir Payload
+  - cp -r build/ios/iphoneos/Runner.app Payload/
+  - zip -r app.ipa Payload
 
     artifacts:
       - app.ipa
