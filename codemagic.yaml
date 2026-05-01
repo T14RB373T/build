@@ -7,20 +7,30 @@ workflows:
       flutter: stable
       xcode: latest
 
-scripts:
-  - flutter clean
-  - flutter pub get
+    scripts:
+      # 🔥 Clean project
+      - flutter clean
+      - rm -rf ios/Pods
+      - rm -rf ios/Podfile.lock
 
-  - sed -i '' 's/DEVELOPMENT_TEAM = .*/DEVELOPMENT_TEAM = "";/g' ios/Runner.xcodeproj/project.pbxproj || true
-  - sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj || true
-  - sed -i '' 's/CODE_SIGNING_ALLOWED = YES;/CODE_SIGNING_ALLOWED = NO;/g' ios/Runner.xcodeproj/project.pbxproj || true
-  - sed -i '' 's/CODE_SIGNING_REQUIRED = YES;/CODE_SIGNING_REQUIRED = NO;/g' ios/Runner.xcodeproj/project.pbxproj || true
+      # 🔥 Install dependencies
+      - flutter pub get
 
-  - flutter build ios --release --no-codesign
+      # 🔥 Disable ALL code signing (inti masalah kamu)
+      - sed -i '' 's/DEVELOPMENT_TEAM = .*/DEVELOPMENT_TEAM = "";/g' ios/Runner.xcodeproj/project.pbxproj || true
+      - sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj || true
 
-  - mkdir Payload
-  - cp -r build/ios/iphoneos/Runner.app Payload/
-  - zip -r app.ipa Payload
+      # Tambahkan setting paksa kalau belum ada
+      - echo "CODE_SIGNING_ALLOWED = NO;" >> ios/Runner.xcodeproj/project.pbxproj
+      - echo "CODE_SIGNING_REQUIRED = NO;" >> ios/Runner.xcodeproj/project.pbxproj
+
+      # 🔥 Build tanpa signing
+      - flutter build ios --release --no-codesign
+
+      # 🔥 Convert ke IPA manual
+      - mkdir Payload
+      - cp -r build/ios/iphoneos/Runner.app Payload/
+      - zip -r app.ipa Payload
 
     artifacts:
       - app.ipa
