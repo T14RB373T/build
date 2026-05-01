@@ -1,6 +1,6 @@
 workflows:
   ios-unsigned:
-    name: iOS Unsigned Simulator Build
+    name: iOS Unsigned Build (Stable)
     max_build_duration: 60
 
     environment:
@@ -8,25 +8,29 @@ workflows:
       xcode: latest
 
     scripts:
-      # 🔥 cek environment
-      - flutter doctor
-
-      # 🔥 clean project
+      # 🔥 Clean
       - flutter clean
-
-      # 🔥 install dependencies
       - flutter pub get
 
-      # 🔥 regenerate project (biar iOS fresh & tidak corrupt)
+      # 🔥 Regenerate iOS (biar fresh)
       - rm -rf ios
       - flutter create .
 
-      # 🔥 build TANPA signing (pakai simulator)
-      - flutter build ios --release --no-codesign --simulator
+      # 🔥 Build pakai Xcode (tanpa signing)
+      - cd ios
+      - xcodebuild -workspace Runner.xcworkspace \
+        -scheme Runner \
+        -configuration Release \
+        -sdk iphonesimulator \
+        -derivedDataPath build \
+        CODE_SIGNING_ALLOWED=NO
 
-      # 🔥 buat IPA manual (simulator build)
+      # 🔥 kembali ke root
+      - cd ..
+
+      # 🔥 convert ke IPA
       - mkdir Payload
-      - cp -r build/ios/iphonesimulator/Runner.app Payload/
+      - cp -r ios/build/Build/Products/Release-iphonesimulator/Runner.app Payload/
       - zip -r app.ipa Payload
 
     artifacts:
